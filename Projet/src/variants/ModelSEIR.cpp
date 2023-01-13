@@ -48,6 +48,8 @@ ModelSEIR::~ModelSEIR()
 {
 }
 
+// resoud le modele ou les individu ne sont pas contagieux (expose)
+// SEIR : Suscepties Exposed Infected Recovered
 void ModelSEIR::resoudSEIR()
 {
     N1 = 30;     // population
@@ -58,8 +60,8 @@ void ModelSEIR::resoudSEIR()
     gama1 = 0.05; // taux de guerison
 
     nu1 = 0.009;  // taux de naissance
-    mu1 = 0.01;   // taux de mortalité
-    sigma1 = 0.7; // taux de progression de l'exposition à l'infection
+    mu1 = 0.01;   // taux de mortalitÃ©
+    sigma1 = 0.7; // taux de progression de l'exposition Ã  l'infection
     double n;
 
     vector<double> S(nday); // suscepties
@@ -110,7 +112,7 @@ void ModelSEIR::resoudSEIR()
             cout << "Le nombre des Guerri est soit inferieur a 0 soit superieur a la population totale." << endl;
             //break;
         }
-        cout << "Jour numero : " << i + 1 << "  Sucesptible : " << S[i + 1] << "  Infected : " << I[i + 1] << "  Exposed : " << E[i + 1] << "  Recovered : " << R[i + 1] << endl;
+        cout << "Jour numero : " << i + 1 << "  Suscepties : " << S[i + 1] << "  Infected : " << I[i + 1] << "  Exposed : " << E[i + 1] << "  Recovered : " << R[i + 1] << endl;
     }
 
     Plot2D plot; // creation d'un graphe
