@@ -40,7 +40,8 @@ ModelSIRI::~ModelSIRI()
 {
 }
 
-
+// resoud le modele ou un individu gueri peut etre reinfecte
+// SIRI : Suscepties Infected Recovered Infected
 void ModelSIRI::resoudSIRI()
 {
     N1 = 100;    // population
@@ -50,19 +51,19 @@ void ModelSIRI::resoudSIRI()
     beta1 = 0.8; // taux d'infection
     gama1 = 0.3; // taux de guerison
 
-    mu1 = 0.1;  // taux de mortalité
+    mu1 = 0.1;  // taux de mortalitÃ©
 
     vector<double> S(nday); // susceptible
     vector<double> I(nday); // infecte
     vector<double> R(nday); // recovered
-    vector<double> t;        // temps
+    vector<double> t;       // temps
 
     I.at(0) = 0.001;     // Initial infective proportion
     S.at(0) = N1 - I[0]; // initial susceptible
     // R.at(0) = beta1 / (mu1 + gama1);
     R.at(0) = 0.;
 
-    //  Define the ODE’s of the model and solve numerically by Euler’s method:
+    // Definir les ODE du modele et les resoudre numeriquement par la methode d'Euler
 
     for (double i = 0; i < nday; i += dt)
     {
@@ -75,7 +76,7 @@ void ModelSIRI::resoudSIRI()
         if (S[i + 1] < 0 || S[i + 1] > N)
         {
             cout << "Attention ! " << endl;
-            cout << "Le nombre des Susceptible est soit inferieur a 0 soit superieur a la population totale." << endl;
+            cout << "Le nombre des Suscepties est soit inferieur a 0 soit superieur a la population totale." << endl;
             // break;
         }
         else if (I[i + 1] < 0 || I[i + 1] > N)
@@ -87,40 +88,40 @@ void ModelSIRI::resoudSIRI()
         else if (R[i + 1] < 0 || R[i + 1] > N)
         {
             cout << "Attention ! " << endl;
-            cout << "Le nombre des Guerri est soit inferieur a 0 soit superieur a la population totale." << endl;
+            cout << "Le nombre des Recovered est soit inferieur a 0 soit superieur a la population totale." << endl;
             // break;
         }
         cout << "Jour numero : " << i + 1 << "  Suscepties : " << S[i + 1] << "  Infected : " << I[i + 1] << "  Recovered : " << R[i + 1] << endl;
     }
 
-    Plot2D plot;
-    plot.size(700, 700);
+    Plot2D plot; // creation d'un graphe
 
-    // This disables the deletion of the created gnuplot script and data file.
-    plot.autoclean(false);
+    plot.autoclean(false); // desactive la suppression du script gnuplot cree et du fichier de donnees
+    plot.palette("dark2"); // changement de palette
 
-    plot.xlabel("Temps");
-    plot.ylabel("Population");
+    plot.xlabel("Temps"); // legende de l'axe x
+    plot.ylabel("Population"); // legende de l'axe y
 
-    // Change its palette
-    plot.palette("dark2");
-
-    // Plot two functions
+    // trace les courbes
     plot.drawCurve(t, S).label("Suscepties");
     plot.drawCurve(t, I).label("Infected");
     plot.drawCurve(t, R).label("Recovered");
+
+    // legende des courbes
     plot.legend()
         .atOutsideRightBottom()
         .displayVertical();
 
-    // Create figure to hold plot
-    Figure fig = { {plot} };
-    // Create canvas to hold figure
-    Canvas canvas = { {fig} };
+    // Creation d'une figure qui contient les courbes cree
+    Figure fig = {{plot}};
+    
+    // Creation d'un canvas pour afficher la figure
+    Canvas canvas = {{fig}};
+    canvas.size(750, 750); //taille du canvas
 
-    // Show the plot in a pop-up window
+    // Affichage du canvas dans une fenetre
     canvas.show();
 
-    // Save the plot to a PDF file
+    // Graphe enregistre dans le dossier graphs
     canvas.save("../graphs/modelSIRI.pdf");
 }
